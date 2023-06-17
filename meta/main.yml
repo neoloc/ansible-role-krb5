@@ -1,0 +1,9 @@
+---
+galaxy_info:
+  role_name: krb5
+  author: neoloc
+  description: install krb5 and configure the krb5.conf file
+  license: "license (BSD, MIT)"
+  min_ansible_version: '2.4'
+  github_branch: master
+

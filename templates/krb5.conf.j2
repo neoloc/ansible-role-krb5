@@ -1,0 +1,40 @@
+[libdefaults]
+	default_realm = {{ krb5_default_realm | upper }}
+
+# The following krb5.conf variables are only for MIT Kerberos.
+	kdc_timesync = {{ krb5_kdc_timesync }}
+	ccache_type = {{ krb5_ccache_type }}
+	forwardable = {{ krb5_forwardable | string }}
+	proxiable = {{ krb5_proxiable | string }}
+
+# The following sets encryption types to use for MIT Kerberos
+{% if krb5_default_tgs_enctypes is defined %}
+default_tgs_enctypes = {{ krb5_default_tgs_enctypes | join(' ') }}
+{% endif %}
+{% if krb5_default_tkt_enctypes is defined %}
+default_tkt_enctypes = {{ krb5_default_tkt_enctypes | join(' ') }}
+{% endif %}
+{% if krb5_permitted_enctypes is defined %}
+permitted_enctypes = {{ krb5_permitted_enctypes | join(' ') }}
+{% endif %}
+
+# The following libdefaults parameters are only for Heimdal Kerberos.
+	fcc-mit-ticketflags = true
+
+[realms]
+{% for realm, data in krb5_realms.items() %}
+{{ realm | upper }} = {
+    {% for kdc in data.kdc %}
+    kdc = {{ kdc }}
+    {% endfor %}
+    admin_server = {{ data.admin_server }}
+    default_domain = {{ data.default_domain }}
+}
+{% endfor %}
+
+[domain_realm]
+{% for domain, subdomains in kdc_domain_realms.items() %}
+    {% for subdomain in subdomains %}
+{{ subdomain }} = {{ domain | upper }}
+    {% endfor %}
+{% endfor %}

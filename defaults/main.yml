@@ -1,0 +1,41 @@
+---
+# defaults file for role
+
+krb5_configure: false
+krb5_packages:
+  - krb5-config
+  - krb5-locales
+  - krb5-user
+
+krb5_kdc_timesync: 1
+krb5_ccache_type: 4
+krb5_forwardable: true
+krb5_proxiable: true
+
+krb5_default_realm: somedomain.tld
+krb5_realms:
+  somedomain.tld:
+    kdc:
+      - kdc01.somedomain.tld
+      - kdc02.somedomain.tld
+    admin_server: admin.somedomain.tld
+    default_domain: somedomain.tld
+    # master_kdc: kdc01.somedomain.local
+
+kdc_domain_realms:
+  somedomain.tld:
+    - .somedomain.tld
+    - somedomain.tld
+
+krb5_default_tkt_enctypes:
+  - aes256-cts-hmac-sha1-96
+  - aes128-cts-hmac-sha1-96
+  - rc4-hmac
+krb5_default_tgs_enctypes:
+  - aes256-cts-hmac-sha1-96
+  - aes128-cts-hmac-sha1-96
+  - rc4-hmac
+krb5_permitted_enctypes:
+  - aes256-cts-hmac-sha1-96
+  - aes128-cts-hmac-sha1-96
+  - rc4-hmac
